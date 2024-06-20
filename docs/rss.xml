@@ -1,2 +1,37 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Blog Title</title><link>https://Meekdai.github.io/Gmeek-template</link><description>Blog description</description><copyright>Blog Title</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://Meekdai.github.io/Gmeek-template</link></image><lastBuildDate>Thu, 14 Mar 2024 09:17:29 +0000</lastBuildDate><managingEditor>Blog Title</managingEditor><ttl>60</ttl><webMaster>Blog Title</webMaster><item><title>请接着之后的安装步骤执行</title><link>https://Meekdai.github.io/Gmeek-template/post/qing-jie-zhao-zhi-hou-de-an-zhuang-bu-zou-zhi-xing.html</link><description>如果你点击了`READM.md`的链接后，看到了这个页面，请继续之后的安装步骤执行。</description><guid isPermaLink="true">https://Meekdai.github.io/Gmeek-template/post/qing-jie-zhao-zhi-hou-de-an-zhuang-bu-zou-zhi-xing.html</guid><pubDate>Thu, 14 Mar 2024 09:15:10 +0000</pubDate></item><item><title>这是Gmeek模板仓库</title><link>https://Meekdai.github.io/Gmeek-template/post/zhe-shi-Gmeek-mo-ban-cang-ku.html</link><description>通过这个模板创建库，可以大大减少部署Gmeek博客的配置步骤。</description><guid isPermaLink="true">https://Meekdai.github.io/Gmeek-template/post/zhe-shi-Gmeek-mo-ban-cang-ku.html</guid><pubDate>Wed, 20 Dec 2023 07:42:24 +0000</pubDate></item></channel></rss>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Blog Title</title><link>https://oaert.github.io</link><description>Blog description</description><copyright>Blog Title</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://oaert.github.io</link></image><lastBuildDate>Thu, 20 Jun 2024 08:10:13 +0000</lastBuildDate><managingEditor>Blog Title</managingEditor><ttl>60</ttl><webMaster>Blog Title</webMaster><item><title>Go 单元测试</title><link>https://oaert.github.io/post/Go%20-dan-yuan-ce-shi.html</link><description>### go 单元测试gin框架mock请求&#13;
+[mock请求学习](https://stackoverflow.com/questions/57733801/how-to-set-mock-gin-context-for-bindjson/67034058#67034058)&#13;
+&#13;
+#### 示例代码&#13;
+```go&#13;
+func MockJsonPost(c *gin.Context /* the test context */, content interface{}) {&#13;
+    c.Request.Method = 'POST' // or PUT&#13;
+    c.Request.Header.Set('Content-Type', 'application/json')&#13;
+&#13;
+    jsonbytes, err := json.Marshal(content)&#13;
+    if err != nil {&#13;
+        panic(err)&#13;
+    }&#13;
+    &#13;
+    // the request body must be an io.ReadCloser&#13;
+    // the bytes buffer though doesn't implement io.Closer,&#13;
+    // so you wrap it in a no-op closer&#13;
+    c.Request.Body = io.NopCloser(bytes.NewBuffer(jsonbytes))&#13;
+}&#13;
+```&#13;
+```go&#13;
+func TestMyHandler(t *testing.T) {&#13;
+    w := httptest.NewRecorder()&#13;
+    ctx, _ := gin.CreateTestContext(w) &#13;
+&#13;
+    ctx.Request = &amp;http.Request{&#13;
+        Header: make(http.Header),&#13;
+    }&#13;
+&#13;
+&#13;
+    MockJsonPost(ctx, map[string]interface{}{'foo': 'bar'})&#13;
+    &#13;
+    MyHandler(ctx)&#13;
+    assert.EqualValues(t, http.StatusOK, w.Code)&#13;
+} &#13;
+```。</description><guid isPermaLink="true">https://oaert.github.io/post/Go%20-dan-yuan-ce-shi.html</guid><pubDate>Thu, 20 Jun 2024 08:09:44 +0000</pubDate></item></channel></rss>
