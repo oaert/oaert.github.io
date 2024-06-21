@@ -40,3 +40,27 @@ mock.ExpectBegin()
 
 示例教程
 [sqlmock](https://cloud.tencent.com/developer/article/2009073)
+
+```go
+mock.ExpectExec("UPDATE products").WillReturnResult(sqlmock.NewResult(1, 1))
+```
+
+表示执行update时返回结果1 1，一个是lastInsertID，一个是rowsAffected。
+
+```go
+mock.ExpectExec("INSERT INTO product_viewers").WithArgs(2, 3).WillReturnResult(sqlmock.NewResult(1, 1))
+```
+
+表示执行insert时，使用2 3作为参数，并返回结果1 1。
+
+```go
+mock.ExpectBegin() 和 mock.ExpectCommit()表示mock 事务的开始和结束。
+```
+
+第二个测试用例，与第一个不同的地方是，执行insert时报错。
+
+```go
+mock.ExpectExec("INSERT INTO product_viewers"). WithArgs(2, 3). WillReturnError(fmt.Errorf("some error"))
+```
+
+表示执行insert时，使用2 3作为参数，并返回错误。

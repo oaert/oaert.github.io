@@ -50,7 +50,13 @@ mock.ExpectBegin()
 ```
 
 示例教程
-[sqlmock](https://cloud.tencent.com/developer/article/2009073)。">
+[sqlmock](https://cloud.tencent.com/developer/article/2009073)
+
+```go
+mock.ExpectExec('UPDATE products').WillReturnResult(sqlmock.NewResult(1, 1))
+```
+
+表示执行update时返回结果1 1，一个是lastInsertID，一个是rowsAffected。">
 <meta property="og:title" content="Go Mock Sqlmock">
 <meta property="og:description" content="## Go mock 数据库
 
@@ -93,7 +99,13 @@ mock.ExpectBegin()
 ```
 
 示例教程
-[sqlmock](https://cloud.tencent.com/developer/article/2009073)。">
+[sqlmock](https://cloud.tencent.com/developer/article/2009073)
+
+```go
+mock.ExpectExec('UPDATE products').WillReturnResult(sqlmock.NewResult(1, 1))
+```
+
+表示执行update时返回结果1 1，一个是lastInsertID，一个是rowsAffected。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://oaert.github.io/post/Go%20Mock%20Sqlmock.html">
 <meta property="og:image" content="https://img.picui.cn/free/2024/06/20/6673d27508749.png">
@@ -187,7 +199,15 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
    <span class="pl-s1">sqlmock</span>.<span class="pl-en">NewRows</span>([]<span class="pl-smi">string</span>{<span class="pl-s">"id"</span>, <span class="pl-s">"username"</span>, <span class="pl-s">"secret"</span>, <span class="pl-s">"created_at"</span>, <span class="pl-s">"updated_at"</span>}).
     <span class="pl-en">AddRow</span>(<span class="pl-c1">1</span>, <span class="pl-s1">user</span>.<span class="pl-c1">UserName</span>, <span class="pl-s1">user</span>.<span class="pl-c1">Secret</span>, <span class="pl-s1">user</span>.<span class="pl-c1">CreatedAt</span>, <span class="pl-s1">user</span>.<span class="pl-c1">UpdatedAt</span>))</pre></div>
 <p>示例教程<br>
-<a href="https://cloud.tencent.com/developer/article/2009073" rel="nofollow">sqlmock</a></p></div>
+<a href="https://cloud.tencent.com/developer/article/2009073" rel="nofollow">sqlmock</a></p>
+<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-s1">mock</span>.<span class="pl-en">ExpectExec</span>(<span class="pl-s">"UPDATE products"</span>).<span class="pl-en">WillReturnResult</span>(<span class="pl-s1">sqlmock</span>.<span class="pl-en">NewResult</span>(<span class="pl-c1">1</span>, <span class="pl-c1">1</span>))</pre></div>
+<p>表示执行update时返回结果1 1，一个是lastInsertID，一个是rowsAffected。</p>
+<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-s1">mock</span>.<span class="pl-en">ExpectExec</span>(<span class="pl-s">"INSERT INTO product_viewers"</span>).<span class="pl-en">WithArgs</span>(<span class="pl-c1">2</span>, <span class="pl-c1">3</span>).<span class="pl-en">WillReturnResult</span>(<span class="pl-s1">sqlmock</span>.<span class="pl-en">NewResult</span>(<span class="pl-c1">1</span>, <span class="pl-c1">1</span>))</pre></div>
+<p>表示执行insert时，使用2 3作为参数，并返回结果1 1。</p>
+<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-s1">mock</span>.<span class="pl-en">ExpectBegin</span>() <span class="pl-s1">和</span> <span class="pl-s1">mock</span>.<span class="pl-en">ExpectCommit</span>()<span class="pl-s1">表示mock</span> <span class="pl-s1">事务的开始和结束</span>。</pre></div>
+<p>第二个测试用例，与第一个不同的地方是，执行insert时报错。</p>
+<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-s1">mock</span>.<span class="pl-en">ExpectExec</span>(<span class="pl-s">"INSERT INTO product_viewers"</span>). <span class="pl-en">WithArgs</span>(<span class="pl-c1">2</span>, <span class="pl-c1">3</span>). <span class="pl-en">WillReturnError</span>(<span class="pl-s1">fmt</span>.<span class="pl-en">Errorf</span>(<span class="pl-s">"some error"</span>))</pre></div>
+<p>表示执行insert时，使用2 3作为参数，并返回错误。</p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
 <div class="comments" id="comments"></div>
