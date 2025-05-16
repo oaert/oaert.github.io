@@ -10,83 +10,51 @@
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="### go 单元测试gin框架mock请求
-[mock请求学习](https://stackoverflow.com/questions/57733801/how-to-set-mock-gin-context-for-bindjson/67034058#67034058)
+<meta name="description" content="## 卡在 A start job is running for hait for Network to be Configured (1min 40s / no） 这里
 
-#### 示例代码
-```go
-func MockJsonPost(c *gin.Context /* the test context */, content interface{}) {
-    c.Request.Method = 'POST' // or PUT
-    c.Request.Header.Set('Content-Type', 'application/json')
+![LOGO](https://img2023.cnblogs.com/blog/2908207/202304/2908207-20230414174711771-2116171721.png)
 
-    jsonbytes, err := json.Marshal(content)
-    if err != nil {
-        panic(err)
-    }
-    
-    // the request body must be an io.ReadCloser
-    // the bytes buffer though doesn't implement io.Closer,
-    // so you wrap it in a no-op closer
-    c.Request.Body = io.NopCloser(bytes.NewBuffer(jsonbytes))
-}
+### 解决方法
+```shell
+vim /etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
+
+#在service添加配置
+TimeoutStartSec=2sec
+
 ```
-```go
-func TestMyHandler(t *testing.T) {
-    w := httptest.NewRecorder()
-    ctx, _ := gin.CreateTestContext(w) 
 
-    ctx.Request = &http.Request{
-        Header: make(http.Header),
-    }
+如图
+![LOGO](https://img.picui.cn/free/2025/05/16/6827094fb6459.png)
 
 
-    MockJsonPost(ctx, map[string]interface{}{'foo': 'bar'})
-    
-    MyHandler(ctx)
-    assert.EqualValues(t, http.StatusOK, w.Code)
-} 
-```。">
-<meta property="og:title" content="Go 单元测试">
-<meta property="og:description" content="### go 单元测试gin框架mock请求
-[mock请求学习](https://stackoverflow.com/questions/57733801/how-to-set-mock-gin-context-for-bindjson/67034058#67034058)
+## 失败时候可以试下下面的方法
 
-#### 示例代码
-```go
-func MockJsonPost(c *gin.Context /* the test context */, content interface{}) {
-    c.Request.Method = 'POST' // or PUT
-    c.Request.Header.Set('Content-Type', 'application/json')
+修改网卡配置 /etc/netplan/00-installer-config.yaml ，也有可能不是这个名字，一般这个文件夹下面只有一个yaml配置文件，用来配置网卡的信息。">
+<meta property="og:title" content="ubuntu 开机网络检测">
+<meta property="og:description" content="## 卡在 A start job is running for hait for Network to be Configured (1min 40s / no） 这里
 
-    jsonbytes, err := json.Marshal(content)
-    if err != nil {
-        panic(err)
-    }
-    
-    // the request body must be an io.ReadCloser
-    // the bytes buffer though doesn't implement io.Closer,
-    // so you wrap it in a no-op closer
-    c.Request.Body = io.NopCloser(bytes.NewBuffer(jsonbytes))
-}
+![LOGO](https://img2023.cnblogs.com/blog/2908207/202304/2908207-20230414174711771-2116171721.png)
+
+### 解决方法
+```shell
+vim /etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
+
+#在service添加配置
+TimeoutStartSec=2sec
+
 ```
-```go
-func TestMyHandler(t *testing.T) {
-    w := httptest.NewRecorder()
-    ctx, _ := gin.CreateTestContext(w) 
 
-    ctx.Request = &http.Request{
-        Header: make(http.Header),
-    }
+如图
+![LOGO](https://img.picui.cn/free/2025/05/16/6827094fb6459.png)
 
 
-    MockJsonPost(ctx, map[string]interface{}{'foo': 'bar'})
-    
-    MyHandler(ctx)
-    assert.EqualValues(t, http.StatusOK, w.Code)
-} 
-```。">
+## 失败时候可以试下下面的方法
+
+修改网卡配置 /etc/netplan/00-installer-config.yaml ，也有可能不是这个名字，一般这个文件夹下面只有一个yaml配置文件，用来配置网卡的信息。">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://oaert.github.io/post/Go%20-dan-yuan-ce-shi.html">
+<meta property="og:url" content="https://oaert.github.io/post/ubuntu%20-kai-ji-wang-luo-jian-ce.html">
 <meta property="og:image" content="https://img.picui.cn/free/2024/06/20/6673d27508749.png">
-<title>Go 单元测试</title>
+<title>ubuntu 开机网络检测</title>
 <link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
 
 
@@ -129,7 +97,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 
 <body>
     <div id="header">
-<h1 class="postTitle">Go 单元测试</h1>
+<h1 class="postTitle">ubuntu 开机网络检测</h1>
 <div class="title-right">
     <a href="https://oaert.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
         <svg class="octicon" width="16" height="16">
@@ -137,7 +105,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
         </svg>
     </a>
     
-    <a href="https://github.com/oaert/oaert.github.io/issues/1" target="_blank" class="btn btn-invisible circle" title="Issue">
+    <a href="https://github.com/oaert/oaert.github.io/issues/4" target="_blank" class="btn btn-invisible circle" title="Issue">
         <svg class="octicon" width="16" height="16">
             <path id="pathIssue" fill-rule="evenodd"></path>
         </svg>
@@ -153,37 +121,22 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
 </div>
     <div id="content">
-<div class="markdown-body" id="postBody"><h3>go 单元测试gin框架mock请求</h3>
-<p><a href="https://stackoverflow.com/questions/57733801/how-to-set-mock-gin-context-for-bindjson/67034058#67034058" rel="nofollow">mock请求学习</a></p>
-<h4>示例代码</h4>
-<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-k">func</span> <span class="pl-s1">MockJsonPost</span>(<span class="pl-s1">c</span> <span class="pl-c1">*</span>gin.<span class="pl-smi">Context</span> <span class="pl-c">/* the test context */</span>, <span class="pl-s1">content</span> <span class="pl-k">interface</span>{}) {
-    <span class="pl-s1">c</span>.<span class="pl-c1">Request</span>.<span class="pl-c1">Method</span> <span class="pl-c1">=</span> <span class="pl-s">"POST"</span> <span class="pl-c">// or PUT</span>
-    <span class="pl-s1">c</span>.<span class="pl-c1">Request</span>.<span class="pl-c1">Header</span>.<span class="pl-c1">Set</span>(<span class="pl-s">"Content-Type"</span>, <span class="pl-s">"application/json"</span>)
+<div class="markdown-body" id="postBody"><h2>卡在 A start job is running for hait for Network to be Configured (1min 40s / no） 这里</h2>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/bd6e5f1ee85817791304da18722b4c6e4fd0139d5aa7c29ebd7ff3fd63b57ba3/68747470733a2f2f696d67323032332e636e626c6f67732e636f6d2f626c6f672f323930383230372f3230323330342f323930383230372d32303233303431343137343731313737312d323131363137313732312e706e67"><img src="https://camo.githubusercontent.com/bd6e5f1ee85817791304da18722b4c6e4fd0139d5aa7c29ebd7ff3fd63b57ba3/68747470733a2f2f696d67323032332e636e626c6f67732e636f6d2f626c6f672f323930383230372f3230323330342f323930383230372d32303233303431343137343731313737312d323131363137313732312e706e67" alt="LOGO" data-canonical-src="https://img2023.cnblogs.com/blog/2908207/202304/2908207-20230414174711771-2116171721.png" style="max-width: 100%;"></a></p>
+<h3>解决方法</h3>
+<div class="highlight highlight-source-shell"><pre class="notranslate">vim /etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
 
-    <span class="pl-s1">jsonbytes</span>, <span class="pl-s1">err</span> <span class="pl-c1">:=</span> <span class="pl-s1">json</span>.<span class="pl-c1">Marshal</span>(<span class="pl-s1">content</span>)
-    <span class="pl-k">if</span> <span class="pl-s1">err</span> <span class="pl-c1">!=</span> <span class="pl-c1">nil</span> {
-        <span class="pl-s1">panic</span>(<span class="pl-s1">err</span>)
-    }
-    
-    <span class="pl-c">// the request body must be an io.ReadCloser</span>
-    <span class="pl-c">// the bytes buffer though doesn't implement io.Closer,</span>
-    <span class="pl-c">// so you wrap it in a no-op closer</span>
-    <span class="pl-s1">c</span>.<span class="pl-c1">Request</span>.<span class="pl-c1">Body</span> <span class="pl-c1">=</span> <span class="pl-s1">io</span>.<span class="pl-c1">NopCloser</span>(<span class="pl-s1">bytes</span>.<span class="pl-c1">NewBuffer</span>(<span class="pl-s1">jsonbytes</span>))
-}</pre></div>
-<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-k">func</span> <span class="pl-s1">TestMyHandler</span>(<span class="pl-s1">t</span> <span class="pl-c1">*</span>testing.<span class="pl-smi">T</span>) {
-    <span class="pl-s1">w</span> <span class="pl-c1">:=</span> <span class="pl-s1">httptest</span>.<span class="pl-c1">NewRecorder</span>()
-    <span class="pl-s1">ctx</span>, <span class="pl-s1">_</span> <span class="pl-c1">:=</span> <span class="pl-s1">gin</span>.<span class="pl-c1">CreateTestContext</span>(<span class="pl-s1">w</span>) 
-
-    <span class="pl-s1">ctx</span>.<span class="pl-c1">Request</span> <span class="pl-c1">=</span> <span class="pl-c1">&amp;</span>http.<span class="pl-smi">Request</span>{
-        <span class="pl-s1">Header</span>: <span class="pl-s1">make</span>(http.<span class="pl-smi">Header</span>),
-    }
-
-
-    <span class="pl-s1">MockJsonPost</span>(<span class="pl-s1">ctx</span>, <span class="pl-k">map</span>[<span class="pl-smi">string</span>]<span class="pl-k">interface</span>{}{<span class="pl-s">"foo"</span>: <span class="pl-s">"bar"</span>})
-    
-    <span class="pl-s1">MyHandler</span>(<span class="pl-s1">ctx</span>)
-    <span class="pl-s1">assert</span>.<span class="pl-c1">EqualValues</span>(<span class="pl-s1">t</span>, <span class="pl-s1">http</span>.<span class="pl-c1">StatusOK</span>, <span class="pl-s1">w</span>.<span class="pl-c1">Code</span>)
-} </pre></div></div>
+<span class="pl-c"><span class="pl-c">#</span>在service添加配置</span>
+TimeoutStartSec=2sec
+</pre></div>
+<p>如图<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/0a7950a6ff4976e3eaab7a62c9e429c531045338b80e5389dba83cc3d84e7af5/68747470733a2f2f696d672e70696375692e636e2f667265652f323032352f30352f31362f363832373039346662363435392e706e67"><img src="https://camo.githubusercontent.com/0a7950a6ff4976e3eaab7a62c9e429c531045338b80e5389dba83cc3d84e7af5/68747470733a2f2f696d672e70696375692e636e2f667265652f323032352f30352f31362f363832373039346662363435392e706e67" alt="LOGO" data-canonical-src="https://img.picui.cn/free/2025/05/16/6827094fb6459.png" style="max-width: 100%;"></a></p>
+<h2>失败时候可以试下下面的方法</h2>
+<p>修改网卡配置 /etc/netplan/00-installer-config.yaml ，也有可能不是这个名字，一般这个文件夹下面只有一个yaml配置文件，用来配置网卡的信息。</p>
+<p>在网卡上添加 optional: true 选项 然后重启系统，再看是否还卡同样的问题</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/e9de1c4b5a8c3882eeb11bee972f8306dcc51d2834d022ceaae9a4bd93cd4681/68747470733a2f2f696d67323032332e636e626c6f67732e636f6d2f626c6f672f323930383230372f3230323330382f323930383230372d32303233303830343039353230343431342d313939343137343139322e706e67"><img src="https://camo.githubusercontent.com/e9de1c4b5a8c3882eeb11bee972f8306dcc51d2834d022ceaae9a4bd93cd4681/68747470733a2f2f696d67323032332e636e626c6f67732e636f6d2f626c6f672f323930383230372f3230323330382f323930383230372d32303233303830343039353230343431342d313939343137343139322e706e67" alt="LOGO" data-canonical-src="https://img2023.cnblogs.com/blog/2908207/202308/2908207-20230804095204414-1994174192.png" style="max-width: 100%;"></a></p>
+<p>这个配置表示，该网卡的配置是可选的，而不是强制性的。</p>
+<p>这意味着系统可以在没有这个网卡配置的情况下正常运行，或者在必要时自动选择适当的默认配置。</p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>

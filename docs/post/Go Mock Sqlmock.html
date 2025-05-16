@@ -179,47 +179,47 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     <div id="content">
 <div class="markdown-body" id="postBody"><h2>Go mock 数据库</h2>
 <h4>写TestMain初始化</h4>
-<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-k">func</span> <span class="pl-en">TestMain</span>(<span class="pl-s1">m</span> <span class="pl-c1">*</span>testing.<span class="pl-smi">M</span>) {
+<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-k">func</span> <span class="pl-s1">TestMain</span>(<span class="pl-s1">m</span> <span class="pl-c1">*</span>testing.<span class="pl-smi">M</span>) {
 	<span class="pl-c">//把匹配器设置成相等匹配器，不设置默认使用正则匹配</span>
-	<span class="pl-s1">db</span>, <span class="pl-s1">mock</span>, <span class="pl-s1">err</span> <span class="pl-c1">=</span> <span class="pl-s1">sqlmock</span>.<span class="pl-en">New</span>(<span class="pl-s1">sqlmock</span>.<span class="pl-en">QueryMatcherOption</span>(<span class="pl-s1">sqlmock</span>.<span class="pl-c1">QueryMatcherEqual</span>))
+	<span class="pl-s1">db</span>, <span class="pl-s1">mock</span>, <span class="pl-s1">err</span> <span class="pl-c1">=</span> <span class="pl-s1">sqlmock</span>.<span class="pl-c1">New</span>(<span class="pl-s1">sqlmock</span>.<span class="pl-c1">QueryMatcherOption</span>(<span class="pl-s1">sqlmock</span>.<span class="pl-c1">QueryMatcherEqual</span>))
 	<span class="pl-k">if</span> <span class="pl-s1">err</span> <span class="pl-c1">!=</span> <span class="pl-c1">nil</span> {
-		<span class="pl-en">panic</span>(<span class="pl-s1">err</span>)
+		<span class="pl-s1">panic</span>(<span class="pl-s1">err</span>)
 	}
-	<span class="pl-s1">tool</span>.<span class="pl-c1">DB</span>, <span class="pl-s1">err</span> <span class="pl-c1">=</span> <span class="pl-s1">gorm</span>.<span class="pl-en">Open</span>(<span class="pl-s1">mysql</span>.<span class="pl-en">New</span>(mysql.<span class="pl-smi">Config</span>{
+	<span class="pl-s1">tool</span>.<span class="pl-c1">DB</span>, <span class="pl-s1">err</span> <span class="pl-c1">=</span> <span class="pl-s1">gorm</span>.<span class="pl-c1">Open</span>(<span class="pl-s1">mysql</span>.<span class="pl-c1">New</span>(mysql.<span class="pl-smi">Config</span>{
 		<span class="pl-s1">Conn</span>:                      <span class="pl-s1">db</span>,
 		<span class="pl-s1">SkipInitializeWithVersion</span>: <span class="pl-c1">true</span>,
 	}), <span class="pl-c1">&amp;</span>gorm.<span class="pl-smi">Config</span>{})
 
 	<span class="pl-c">// m.Run 是调用包下面各个Test函数的入口</span>
-	<span class="pl-s1">os</span>.<span class="pl-en">Exit</span>(<span class="pl-s1">m</span>.<span class="pl-en">Run</span>())
+	<span class="pl-s1">os</span>.<span class="pl-c1">Exit</span>(<span class="pl-s1">m</span>.<span class="pl-c1">Run</span>())
 }</pre></div>
 <h4>使用期望，查询不用begin cimmit事务，创建更新需要开始事务</h4>
 <div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-c">//示例有事务</span>
 
-<span class="pl-s1">mock</span>.<span class="pl-en">ExpectBegin</span>()
- <span class="pl-s1">mock</span>.<span class="pl-en">ExpectExec</span>(<span class="pl-s">"INSERT INTO `users` (`username`,`secret`,`created_at`,`updated_at`) VALUES (?,?,?,?)"</span>).
-  <span class="pl-en">WithArgs</span>(<span class="pl-s1">user</span>.<span class="pl-c1">UserName</span>, <span class="pl-s1">user</span>.<span class="pl-c1">Secret</span>, <span class="pl-s1">user</span>.<span class="pl-c1">CreatedAt</span>, <span class="pl-s1">user</span>.<span class="pl-c1">UpdatedAt</span>).
-  <span class="pl-en">WillReturnResult</span>(<span class="pl-s1">sqlmock</span>.<span class="pl-en">NewResult</span>(<span class="pl-c1">1</span>, <span class="pl-c1">1</span>))
- <span class="pl-s1">mock</span>.<span class="pl-en">ExpectCommit</span>()
+<span class="pl-s1">mock</span>.<span class="pl-c1">ExpectBegin</span>()
+ <span class="pl-s1">mock</span>.<span class="pl-c1">ExpectExec</span>(<span class="pl-s">"INSERT INTO `users` (`username`,`secret`,`created_at`,`updated_at`) VALUES (?,?,?,?)"</span>).
+  <span class="pl-c1">WithArgs</span>(<span class="pl-s1">user</span>.<span class="pl-c1">UserName</span>, <span class="pl-s1">user</span>.<span class="pl-c1">Secret</span>, <span class="pl-s1">user</span>.<span class="pl-c1">CreatedAt</span>, <span class="pl-s1">user</span>.<span class="pl-c1">UpdatedAt</span>).
+  <span class="pl-c1">WillReturnResult</span>(<span class="pl-s1">sqlmock</span>.<span class="pl-c1">NewResult</span>(<span class="pl-c1">1</span>, <span class="pl-c1">1</span>))
+ <span class="pl-s1">mock</span>.<span class="pl-c1">ExpectCommit</span>()
 
 <span class="pl-c">//示例无事务</span>
 
- <span class="pl-s1">mock</span>.<span class="pl-en">ExpectQuery</span>(<span class="pl-s">"SELECT * FROM `users`  WHERE (username = ? AND secret = ?) "</span><span class="pl-c1">+</span>
+ <span class="pl-s1">mock</span>.<span class="pl-c1">ExpectQuery</span>(<span class="pl-s">"SELECT * FROM `users`  WHERE (username = ? AND secret = ?) "</span><span class="pl-c1">+</span>
   <span class="pl-s">"ORDER BY `users`.`id` ASC LIMIT 1"</span>).
-  <span class="pl-en">WithArgs</span>(<span class="pl-s1">user</span>.<span class="pl-c1">UserName</span>, <span class="pl-s1">user</span>.<span class="pl-c1">Secret</span>).
-  <span class="pl-en">WillReturnRows</span>(
+  <span class="pl-c1">WithArgs</span>(<span class="pl-s1">user</span>.<span class="pl-c1">UserName</span>, <span class="pl-s1">user</span>.<span class="pl-c1">Secret</span>).
+  <span class="pl-c1">WillReturnRows</span>(
    <span class="pl-c">// 这里要跟结果集包含的列匹配，因为查询是 SELECT * 所以表的字段都要列出来</span>
-   <span class="pl-s1">sqlmock</span>.<span class="pl-en">NewRows</span>([]<span class="pl-smi">string</span>{<span class="pl-s">"id"</span>, <span class="pl-s">"username"</span>, <span class="pl-s">"secret"</span>, <span class="pl-s">"created_at"</span>, <span class="pl-s">"updated_at"</span>}).
-    <span class="pl-en">AddRow</span>(<span class="pl-c1">1</span>, <span class="pl-s1">user</span>.<span class="pl-c1">UserName</span>, <span class="pl-s1">user</span>.<span class="pl-c1">Secret</span>, <span class="pl-s1">user</span>.<span class="pl-c1">CreatedAt</span>, <span class="pl-s1">user</span>.<span class="pl-c1">UpdatedAt</span>))</pre></div>
+   <span class="pl-s1">sqlmock</span>.<span class="pl-c1">NewRows</span>([]<span class="pl-smi">string</span>{<span class="pl-s">"id"</span>, <span class="pl-s">"username"</span>, <span class="pl-s">"secret"</span>, <span class="pl-s">"created_at"</span>, <span class="pl-s">"updated_at"</span>}).
+    <span class="pl-c1">AddRow</span>(<span class="pl-c1">1</span>, <span class="pl-s1">user</span>.<span class="pl-c1">UserName</span>, <span class="pl-s1">user</span>.<span class="pl-c1">Secret</span>, <span class="pl-s1">user</span>.<span class="pl-c1">CreatedAt</span>, <span class="pl-s1">user</span>.<span class="pl-c1">UpdatedAt</span>))</pre></div>
 <p>示例教程<br>
 <a href="https://cloud.tencent.com/developer/article/2009073" rel="nofollow">sqlmock</a></p>
-<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-s1">mock</span>.<span class="pl-en">ExpectExec</span>(<span class="pl-s">"UPDATE products"</span>).<span class="pl-en">WillReturnResult</span>(<span class="pl-s1">sqlmock</span>.<span class="pl-en">NewResult</span>(<span class="pl-c1">1</span>, <span class="pl-c1">1</span>))</pre></div>
+<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-s1">mock</span>.<span class="pl-c1">ExpectExec</span>(<span class="pl-s">"UPDATE products"</span>).<span class="pl-c1">WillReturnResult</span>(<span class="pl-s1">sqlmock</span>.<span class="pl-c1">NewResult</span>(<span class="pl-c1">1</span>, <span class="pl-c1">1</span>))</pre></div>
 <p>表示执行update时返回结果1 1，一个是lastInsertID，一个是rowsAffected。</p>
-<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-s1">mock</span>.<span class="pl-en">ExpectExec</span>(<span class="pl-s">"INSERT INTO product_viewers"</span>).<span class="pl-en">WithArgs</span>(<span class="pl-c1">2</span>, <span class="pl-c1">3</span>).<span class="pl-en">WillReturnResult</span>(<span class="pl-s1">sqlmock</span>.<span class="pl-en">NewResult</span>(<span class="pl-c1">1</span>, <span class="pl-c1">1</span>))</pre></div>
+<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-s1">mock</span>.<span class="pl-c1">ExpectExec</span>(<span class="pl-s">"INSERT INTO product_viewers"</span>).<span class="pl-c1">WithArgs</span>(<span class="pl-c1">2</span>, <span class="pl-c1">3</span>).<span class="pl-c1">WillReturnResult</span>(<span class="pl-s1">sqlmock</span>.<span class="pl-c1">NewResult</span>(<span class="pl-c1">1</span>, <span class="pl-c1">1</span>))</pre></div>
 <p>表示执行insert时，使用2 3作为参数，并返回结果1 1。</p>
-<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-s1">mock</span>.<span class="pl-en">ExpectBegin</span>() <span class="pl-s1">和</span> <span class="pl-s1">mock</span>.<span class="pl-en">ExpectCommit</span>()<span class="pl-s1">表示mock</span> <span class="pl-s1">事务的开始和结束</span>。</pre></div>
+<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-s1">mock</span>.<span class="pl-c1">ExpectBegin</span>() <span class="pl-s1">和</span> <span class="pl-s1">mock</span>.<span class="pl-c1">ExpectCommit</span>()<span class="pl-s1">表示mock</span> <span class="pl-s1">事务的开始和结束</span>。</pre></div>
 <p>第二个测试用例，与第一个不同的地方是，执行insert时报错。</p>
-<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-s1">mock</span>.<span class="pl-en">ExpectExec</span>(<span class="pl-s">"INSERT INTO product_viewers"</span>). <span class="pl-en">WithArgs</span>(<span class="pl-c1">2</span>, <span class="pl-c1">3</span>). <span class="pl-en">WillReturnError</span>(<span class="pl-s1">fmt</span>.<span class="pl-en">Errorf</span>(<span class="pl-s">"some error"</span>))</pre></div>
+<div class="highlight highlight-source-go"><pre class="notranslate"><span class="pl-s1">mock</span>.<span class="pl-c1">ExpectExec</span>(<span class="pl-s">"INSERT INTO product_viewers"</span>). <span class="pl-c1">WithArgs</span>(<span class="pl-c1">2</span>, <span class="pl-c1">3</span>). <span class="pl-c1">WillReturnError</span>(<span class="pl-s1">fmt</span>.<span class="pl-c1">Errorf</span>(<span class="pl-s">"some error"</span>))</pre></div>
 <p>表示执行insert时，使用2 3作为参数，并返回错误。</p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
